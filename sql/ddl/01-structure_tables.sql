@@ -1,5 +1,5 @@
 -- =========================================================================
--- DDL SCRIPT: TABLE CREATION - INVENTORY MANAGEMENT SYSTEM
+-- DDL SCRIPT: TABLE CREATION - INVENTORY MANAGEMENT SYSTEM (PRODUCTION READY)
 -- =========================================================================
 
 -- 1. Categories Table
@@ -19,7 +19,7 @@ CREATE TABLE suppliers (
     address TEXT
 );
 
--- 3. Products Table
+-- 3. Products Table (Updated with Logical Delete Status)
 CREATE TABLE products (
     id_product SERIAL PRIMARY KEY,
     id_category INT REFERENCES categories(id_category) ON DELETE SET NULL,
@@ -29,7 +29,8 @@ CREATE TABLE products (
     description TEXT,
     sale_price NUMERIC(10, 2) NOT NULL CHECK (sale_price >= 0),
     current_stock INT NOT NULL DEFAULT 0 CHECK (current_stock >= 0),
-    minimum_stock INT NOT NULL DEFAULT 5 CHECK (minimum_stock >= 0)
+    minimum_stock INT NOT NULL DEFAULT 5 CHECK (minimum_stock >= 0),
+    is_active BOOLEAN DEFAULT TRUE NOT NULL -- Campo clave contra pruebas de estrés
 );
 
 -- 4. Branches Table
@@ -79,3 +80,14 @@ CREATE TABLE audit_logs (
     new_values JSONB,
     action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- =========================================================================
+-- PERFORMANCE OPTIMIZATION: PERFORMANCE INDEXES FOR STRESS TESTING
+-- =========================================================================
+CREATE INDEX idx_products_barcode ON products(barcode);
+CREATE INDEX idx_products_category ON products(id_category);
+CREATE INDEX idx_products_active ON products(is_active);
+CREATE INDEX idx_movements_branch ON inventory_movements(id_branch);
+CREATE INDEX idx_movements_date ON inventory_movements(movement_date);
+CREATE INDEX idx_details_movement ON movement_details(id_movement);
+CREATE INDEX idx_details_product ON movement_details(id_product);
