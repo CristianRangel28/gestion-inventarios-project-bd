@@ -1,0 +1,28 @@
+# =========================================================================
+# INVENDATA - CONFIGURACION DE ARCHIVOS IGNORADOS POR GIT
+# =========================================================================
+
+# 1. Archivos y respaldos de Bases de Datos
+# Ignora cualquier copia de seguridad pesada o comprimida que exportes de pgAdmin/DBeaver
+*.backup
+*.sql.gz
+*.tar
+*.bak
+
+# 2. Archivos temporales y de configuración de Visual Studio Code
+# Evita que se suban tus preferencias personales del editor o el historial local
+.vscode/
+*.code-workspace
+.history/
+
+# 3. Archivos basura del Sistema Operativo
+# Archivos ocultos que crean Windows y macOS automáticamente para gestionar carpetas
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 4. Logs e historiales de ejecución locales
+*.log
